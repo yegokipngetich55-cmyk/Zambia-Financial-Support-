@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Zambia Financial Support - Step 1</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+/* =========================
+   ZAMBIA COLORS
+========================= */
+
+:root{
+    --green:#198A00;
+    --green-dark:#106000;
+    --red:#DE2010;
+    --red-dark:#B7190D;
+    --black:#000000;
+    --orange:#EF7D00;
+    --orange-light:#FFB000;
+    --cream:#FFF8E7;
+    --border:#D1D5DB;
+    --text:#1F2937;
+}
+
+/* =========================
+   BODY
+========================= */
+
+body{
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--orange),
+            var(--red)
+        );
+
+    padding:8px;
+    min-height:100vh;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+    width:100%;
+    max-width:430px;
+    margin:auto;
+
+    background:#fff;
+
+    border-radius:18px;
+    overflow:hidden;
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,.25);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green-dark),
+            var(--black)
+        );
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:24px 18px;
+}
+
+.header h1{
+    font-size:25px;
+    margin-bottom:6px;
+    font-weight:800;
+}
+
+.header p{
+    font-size:15px;
+    color:#F3F4F6;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress{
+    height:6px;
+
+    background:rgba(255,255,255,.25);
+
+    margin-top:14px;
+
+    border-radius:8px;
+
+    overflow:hidden;
+}
+
+.progress span{
+    display:block;
+
+    width:33%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--orange),
+            var(--red)
+        );
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:18px;
+}
+
+/* =========================
+   FIELDS
+========================= */
+
+.field{
+    margin-bottom:16px;
+}
+
+label{
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:7px;
+
+    font-size:16px;
+    font-weight:700;
+
+    color:var(--text);
+}
+
+.icon{
+    font-size:24px;
+
+    width:30px;
+
+    text-align:center;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+select{
+    width:100%;
+
+    padding:14px;
+
+    font-size:16px;
+
+    border:1.5px solid var(--border);
+
+    border-radius:12px;
+
+    background:#fff;
+
+    color:#111827;
+}
+
+input::placeholder{
+    color:#9CA3AF;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+
+    border-color:var(--green);
+
+    box-shadow:
+        0 0 0 3px rgba(25,138,0,.18);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+    width:100%;
+
+    padding:15px;
+
+    margin-top:8px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green-dark),
+            var(--black)
+        );
+
+    color:#fff;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 7px 16px rgba(25,138,0,.25);
+
+    transition:.2s ease;
+}
+
+button:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 10px 20px rgba(25,138,0,.30);
+}
+
+button:active{
+    transform:translateY(0);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    text-align:center;
+
+    padding:16px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--orange),
+            var(--red)
+        );
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:380px){
+
+    .header{
+        padding:21px 14px;
+    }
+
+    .header h1{
+        font-size:22px;
+    }
+
+    .header p{
+        font-size:13px;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    label{
+        font-size:15px;
+    }
+
+    input,
+    select{
+        padding:13px;
+        font-size:15px;
+    }
+
+    button{
+        font-size:16px;
+    }
+
+    .footer{
+        font-size:12px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            🇿🇲 Zambia Financial Support
+        </h1>
+
+        <p>
+            Sample Application – Step 1
+        </p>
+
+        <div class="progress">
+            <span></span>
+        </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <form id="applicationForm">
+
+
+            <!-- FULL NAME -->
+
+            <div class="field">
+
+                <label>
+                    <span class="icon">👤</span>
+                    Full Name *
+                </label>
+
+                <input
+                    type="text"
+                    name="fullname"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="field">
+
+                <label>
+                    <span class="icon">📞</span>
+                    Mobile Money Phone Number *
+                </label>
+
+                <input
+                    type="tel"
+                    name="phone"
+                    placeholder="0971234567"
+                    autocomplete="tel"
+                    required
+                >
+
+            </div>
+
+
+            <!-- NATIONAL ID -->
+
+            <div class="field">
+
+                <label>
+                    <span class="icon">🪪</span>
+                    National Registration Card Number *
+                </label>
+
+                <input
+                    type="text"
+                    name="id_number"
+                    placeholder="Enter your NRC number"
+                    required
+                >
+
+            </div>
+
+
+            <!-- OCCUPATION -->
+
+            <div class="field">
+
+                <label>
+                    <span class="icon">💼</span>
+                    Occupation *
+                </label>
+
+                <select
+                    name="occupation"
+                    required
+                >
+
+                    <option value="">
+                        Select Occupation
+                    </option>
+
+                    <option>Student</option>
+                    <option>Business Owner</option>
+                    <option>Self Employed</option>
+                    <option>Employed</option>
+                    <option>Farmer</option>
+                    <option>Teacher</option>
+                    <option>Doctor</option>
+                    <option>Nurse</option>
+                    <option>Engineer</option>
+                    <option>Software Developer</option>
+                    <option>Accountant</option>
+                    <option>Lawyer</option>
+                    <option>Driver</option>
+                    <option>Mechanic</option>
+                    <option>Electrician</option>
+                    <option>Plumber</option>
+                    <option>Carpenter</option>
+                    <option>Welder</option>
+                    <option>Tailor</option>
+                    <option>Hairdresser / Barber</option>
+                    <option>Trader</option>
+                    <option>Salesperson</option>
+                    <option>Hotel Attendant</option>
+                    <option>Chef / Cook</option>
+                    <option>Security Guard</option>
+                    <option>Police Officer</option>
+                    <option>Military Officer</option>
+                    <option>Journalist</option>
+                    <option>Graphic Designer</option>
+                    <option>Photographer</option>
+                    <option>Freelancer</option>
+                    <option>Content Creator</option>
+                    <option>Casual Worker</option>
+                    <option>Unemployed</option>
+                    <option>Retired</option>
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- DISTRICT -->
+
+            <div class="field">
+
+                <label>
+                    <span class="icon">📍</span>
+                    Province *
+                </label>
+
+                <select
+                    name="district"
+                    required
+                >
+
+                    <option value="">
+                        Select Province
+                    </option>
+
+                    <option>Central Province</option>
+                    <option>Copperbelt Province</option>
+                    <option>Eastern Province</option>
+                    <option>Luapula Province</option>
+                    <option>Lusaka Province</option>
+                    <option>Muchinga Province</option>
+                    <option>Northern Province</option>
+                    <option>North-Western Province</option>
+                    <option>Southern Province</option>
+                    <option>Western Province</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+            >
+                Continue to Step 2 →
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        🇿🇲 © 2026 Zambia Financial Support
+        – Sample Application
+
+    </div>
+
+</div>
+
+
+<script>
+
+document
+.getElementById("applicationForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    localStorage.setItem(
+        "fullname",
+        this.fullname.value
+    );
+
+    localStorage.setItem(
+        "phone",
+        this.phone.value
+    );
+
+    localStorage.setItem(
+        "id_number",
+        this.id_number.value
+    );
+
+    localStorage.setItem(
+        "occupation",
+        this.occupation.value
+    );
+
+    localStorage.setItem(
+        "district",
+        this.district.value
+    );
+
+    window.location.href = "page2.html";
+
+});
+
+</script>
+
+</body>
+</html>
