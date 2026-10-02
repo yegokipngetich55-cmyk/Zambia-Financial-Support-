@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Zambia Financial Support - Select Amount</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+/* =========================
+   ZAMBIA COLORS
+========================= */
+
+:root{
+    --green:#198A00;
+    --green-dark:#106000;
+    --red:#DE2010;
+    --black:#000000;
+    --orange:#EF7D00;
+    --orange-light:#FFB000;
+    --cream:#FFF8E7;
+    --border:#E5E7EB;
+    --text:#1F2937;
+    --muted:#6B7280;
+}
+
+/* =========================
+   BODY
+========================= */
+
+body{
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--orange),
+            var(--red)
+        );
+
+    padding:8px;
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+    width:100%;
+
+    max-width:430px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,.25);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green-dark),
+            var(--black)
+        );
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:22px 14px;
+}
+
+.header h2{
+    font-size:27px;
+
+    font-weight:800;
+
+    margin-bottom:6px;
+}
+
+#applicantName{
+    font-size:21px;
+
+    font-weight:800;
+
+    display:block;
+
+    margin:6px 0;
+}
+
+.header p{
+    font-size:14px;
+
+    line-height:1.45;
+}
+
+.header .notice{
+    margin-top:10px;
+
+    color:#F3F4F6;
+
+    font-size:13px;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress{
+    height:6px;
+
+    background:rgba(255,255,255,.25);
+
+    margin-top:14px;
+
+    border-radius:8px;
+
+    overflow:hidden;
+}
+
+.progress span{
+    display:block;
+
+    width:100%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--orange),
+            var(--red)
+        );
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:15px;
+}
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.section-title{
+    font-size:19px;
+
+    font-weight:800;
+
+    color:var(--text);
+
+    margin-bottom:12px;
+
+    text-align:center;
+}
+
+/* =========================
+   AMOUNT GRID
+========================= */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:9px;
+}
+
+/* =========================
+   AMOUNT OPTIONS
+========================= */
+
+.option{
+    position:relative;
+
+    height:76px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:2px solid var(--border);
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:#fff;
+
+    transition:.2s ease;
+}
+
+.option:hover{
+    border-color:var(--green);
+
+    background:#F3FAF1;
+}
+
+.option input{
+    display:none;
+}
+
+.option.active{
+    border-color:var(--green);
+
+    background:#EDF8EA;
+
+    box-shadow:
+        0 3px 8px rgba(25,138,0,.12);
+}
+
+/* =========================
+   AMOUNT TEXT
+========================= */
+
+.amount{
+    font-size:19px;
+
+    font-weight:900;
+
+    color:#374151;
+
+    text-align:center;
+}
+
+.option.active .amount{
+    color:var(--green-dark);
+}
+
+/* =========================
+   CHECKMARK
+========================= */
+
+.checkmark{
+    position:absolute;
+
+    top:6px;
+
+    right:6px;
+
+    width:21px;
+
+    height:21px;
+
+    border:2px solid #C7C7C7;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+.option.active .checkmark{
+    background:var(--green);
+
+    border-color:var(--green);
+}
+
+.option.active .checkmark::after{
+    content:"✓";
+
+    color:#fff;
+
+    font-size:13px;
+
+    font-weight:bold;
+}
+
+/* =========================
+   FULL WIDTH
+========================= */
+
+.full-width{
+    grid-column:1 / -1;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary{
+    margin-top:13px;
+
+    padding:13px;
+
+    background:#F9FAFB;
+
+    border-radius:10px;
+
+    border-left:4px solid var(--orange);
+}
+
+.summary p{
+    font-size:14px;
+
+    margin-bottom:6px;
+
+    color:#374151;
+}
+
+.summary p:last-child{
+    margin-bottom:0;
+}
+
+#selected,
+#fee{
+    font-weight:800;
+
+    color:var(--green-dark);
+}
+
+.helper{
+    margin-top:8px;
+
+    color:#6B7280;
+
+    font-size:12px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+    width:100%;
+
+    padding:15px;
+
+    margin-top:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green-dark),
+            var(--black)
+        );
+
+    color:#fff;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 7px 16px rgba(25,138,0,.25);
+
+    transition:.2s ease;
+}
+
+button:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 10px 20px rgba(25,138,0,.30);
+}
+
+button:active{
+    transform:translateY(0);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    text-align:center;
+
+    padding:12px;
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--orange),
+            var(--red)
+        );
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:380px){
+
+    body{
+        padding:5px;
+    }
+
+    .header{
+        padding:20px 12px;
+    }
+
+    .header h2{
+        font-size:24px;
+    }
+
+    #applicantName{
+        font-size:19px;
+    }
+
+    .content{
+        padding:13px;
+    }
+
+    .section-title{
+        font-size:17px;
+    }
+
+    .option{
+        height:70px;
+    }
+
+    .amount{
+        font-size:17px;
+    }
+
+    button{
+        font-size:16px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h2>
+            🎉 Sample Application
+        </h2>
+
+        <p>
+            <strong id="applicantName">
+                Applicant
+            </strong>
+        </p>
+
+        <p class="notice">
+            Select the amount you would like to request
+            and continue to the next step.
+        </p>
+
+        <div class="progress">
+            <span></span>
+        </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <div class="section-title">
+            💰 Select Your Zambia Financial Support Amount
+        </div>
+
+
+        <div class="grid">
+
+
+            <!-- ZMW 5,000 -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="5000"
+                    data-fee="140"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 5,000
+                </span>
+
+            </label>
+
+
+            <!-- ZMW 10,000 -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="10000"
+                    data-fee="200"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 10,000
+                </span>
+
+            </label>
+
+
+            <!-- ZMW 20,000 -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="20000"
+                    data-fee="350"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 20,000
+                </span>
+
+            </label>
+
+
+            <!-- ZMW 30,000 -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="30000"
+                    data-fee="500"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 30,000
+                </span>
+
+            </label>
+
+
+            <!-- ZMW 50,000 -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="50000"
+                    data-fee="700"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 50,000
+                </span>
+
+            </label>
+
+
+            <!-- ZMW 70,000 -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="70000"
+                    data-fee="900"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 70,000
+                </span>
+
+            </label>
+
+
+            <!-- ZMW 100,000 -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="100000"
+                    data-fee="1200"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 100,000
+                </span>
+
+            </label>
+
+
+            <!-- ZMW 150,000 -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="150000"
+                    data-fee="1500"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 150,000
+                </span>
+
+            </label>
+
+
+            <!-- ZMW 200,000 -->
+
+            <label class="option full-width">
+
+                <input
+                    type="radio"
+                    name="amount"
+                    value="200000"
+                    data-fee="2000"
+                >
+
+                <span class="checkmark"></span>
+
+                <span class="amount">
+                    ZMW 200,000
+                </span>
+
+            </label>
+
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <div class="summary">
+
+            <p>
+                <strong>
+                    💵 Amount Selected:
+                </strong>
+
+                <span id="selected">
+                    ZMW ---
+                </span>
+            </p>
+
+
+            <p>
+                <strong>
+                    🧾 Application Fee:
+                </strong>
+
+                <span id="fee">
+                    ZMW ---
+                </span>
+            </p>
+
+
+            <p class="helper">
+                👆 Select an amount to see the application fee.
+            </p>
+
+        </div>
+
+
+        <!-- CONTINUE -->
+
+        <button
+            id="continueButton"
+            type="button"
+        >
+            ➡️ Continue
+        </button>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        🇿🇲 @ 2026 Zambia Financial Support
+        – Sample Application
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+/* =========================
+   AMOUNT SELECTION
+========================= */
+
+const radios =
+    document.querySelectorAll(
+        'input[name="amount"]'
+    );
+
+let amount = "";
+let fee = "";
+
+
+/* =========================
+   APPLICANT NAME
+========================= */
+
+const savedName =
+    localStorage.getItem("fullName") ||
+    localStorage.getItem("fullname") ||
+    "Applicant";
+
+document
+.getElementById("applicantName")
+.textContent = savedName;
+
+
+/* =========================
+   UPDATE SUMMARY
+========================= */
+
+function updateSummary(
+    selectedAmount,
+    selectedFee
+){
+
+    document
+    .getElementById("selected")
+    .textContent =
+        "ZMW " +
+        Number(selectedAmount)
+        .toLocaleString("en-ZM");
+
+
+    document
+    .getElementById("fee")
+    .textContent =
+        "ZMW " +
+        Number(selectedFee)
+        .toLocaleString("en-ZM");
+
+}
+
+
+/* =========================
+   RADIO EVENTS
+========================= */
+
+radios.forEach(radio => {
+
+    radio.addEventListener(
+        "change",
+        function(){
+
+            document
+            .querySelectorAll(".option")
+            .forEach(option =>
+                option.classList.remove("active")
+            );
+
+
+            this
+            .closest(".option")
+            .classList.add("active");
+
+
+            amount =
+                this.value;
+
+            fee =
+                this.dataset.fee;
+
+
+            /* Save selection */
+
+            localStorage.setItem(
+                "selectedAmount",
+                amount
+            );
+
+            localStorage.setItem(
+                "processingFee",
+                fee
+            );
+
+
+            updateSummary(
+                amount,
+                fee
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================
+   RESTORE PREVIOUS SELECTION
+========================= */
+
+const savedAmount =
+    localStorage.getItem(
+        "selectedAmount"
+    );
+
+
+if(savedAmount){
+
+    const savedRadio =
+        document.querySelector(
+            `input[name="amount"][value="${savedAmount}"]`
+        );
+
+
+    if(savedRadio){
+
+        savedRadio.checked = true;
+
+        savedRadio
+        .closest(".option")
+        .classList.add("active");
+
+
+        amount =
+            savedRadio.value;
+
+        fee =
+            savedRadio.dataset.fee;
+
+
+        localStorage.setItem(
+            "processingFee",
+            fee
+        );
+
+
+        updateSummary(
+            amount,
+            fee
+        );
+
+    }
+
+}
+
+
+/* =========================
+   CONTINUE BUTTON
+========================= */
+
+document
+.getElementById("continueButton")
+.addEventListener(
+    "click",
+    () => {
+
+        if(!amount){
+
+            alert(
+                "Please select an amount."
+            );
+
+            return;
+
+        }
+
+
+        /* Save before redirect */
+
+        localStorage.setItem(
+            "selectedAmount",
+            amount
+        );
+
+        localStorage.setItem(
+            "processingFee",
+            fee
+        );
+
+        localStorage.setItem(
+            "loanAmount",
+            amount
+        );
+
+        localStorage.setItem(
+            "requestedAmount",
+            amount
+        );
+
+
+        window.location.href =
+            "payment.html";
+
+    }
+);
+
+</script>
+
+</body>
+</html>
