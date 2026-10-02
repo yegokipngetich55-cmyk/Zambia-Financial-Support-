@@ -1,1 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Zambia Financial Support - Application Portal</title>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+/* =========================
+   ZAMBIA COLORS
+   Green  #198A00
+   Red    #DE2010
+   Black  #000000
+   Orange #EF7D00
+========================= */
+
+:root{
+    --green:#198A00;
+    --green-dark:#106000;
+    --red:#DE2010;
+    --red-dark:#B7190D;
+    --black:#000000;
+    --orange:#EF7D00;
+    --orange-light:#FFB000;
+    --cream:#FFF8E7;
+    --light:#F8FAFC;
+    --border:#E2E8F0;
+    --text:#1E293B;
+    --muted:#64748B;
+}
+
+/* =========================
+   BODY
+========================= */
+
+body{
+    min-height:100vh;
+    padding:20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(25,138,0,.35),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 90%,
+            rgba(222,32,16,.30),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #198A00 0%,
+            #EF7D00 50%,
+            #DE2010 100%
+        );
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.container{
+    width:100%;
+    max-width:680px;
+    background:#fff;
+    border-radius:30px;
+    overflow:hidden;
+
+    box-shadow:
+        0 30px 70px rgba(0,0,0,.30),
+        0 5px 20px rgba(0,0,0,.10);
+
+    animation:appear .7s ease;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(25px) scale(.98);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+/* =========================
+   HERO IMAGE
+========================= */
+
+.hero{
+    width:100%;
+    background:#fff;
+    overflow:hidden;
+}
+
+.hero img{
+    width:100%;
+    height:auto;
+    display:block;
+    object-fit:contain;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    position:relative;
+    padding:27px 20px;
+    text-align:center;
+    color:#fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--green) 0%,
+            var(--green-dark) 45%,
+            var(--black) 100%
+        );
+
+    overflow:hidden;
+}
+
+.header::before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    right:-80px;
+    top:-90px;
+    background:rgba(239,125,0,.40);
+}
+
+.header::after{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    left:-55px;
+    bottom:-70px;
+    background:rgba(222,32,16,.35);
+}
+
+.header h1{
+    position:relative;
+    z-index:1;
+
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:.7px;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,.25);
+}
+
+.subtitle{
+    position:relative;
+    z-index:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:14px;
+    margin-top:8px;
+
+    font-size:15px;
+    font-weight:600;
+
+    opacity:.95;
+}
+
+.line{
+    width:65px;
+    height:2px;
+    border-radius:5px;
+    background:var(--orange);
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:32px;
+}
+
+/* =========================
+   WELCOME
+========================= */
+
+.welcome{
+    text-align:center;
+    margin-bottom:26px;
+}
+
+.welcome h2{
+    color:var(--black);
+
+    font-size:31px;
+    font-weight:800;
+
+    margin-bottom:8px;
+}
+
+.welcome h2::before{
+    content:"✦";
+    color:var(--green);
+    margin-right:9px;
+}
+
+.welcome h2::after{
+    content:"✦";
+    color:var(--red);
+    margin-left:9px;
+}
+
+.welcome p{
+    color:var(--muted);
+
+    font-size:15px;
+    line-height:1.7;
+
+    max-width:500px;
+    margin:auto;
+}
+
+/* =========================
+   NOTICE
+========================= */
+
+.notice{
+    display:flex;
+    align-items:center;
+
+    gap:16px;
+    padding:18px;
+    margin-bottom:24px;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F0FFE9,
+            #FFF5E5
+        );
+
+    border:1px solid var(--green);
+
+    border-left:
+        5px solid var(--red);
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,.06);
+}
+
+.notice-icon{
+    width:52px;
+    height:52px;
+    min-width:52px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    background:var(--green);
+
+    color:#fff;
+
+    font-size:25px;
+
+    box-shadow:
+        0 5px 12px rgba(25,138,0,.25);
+}
+
+.notice h3{
+    color:var(--black);
+
+    font-size:17px;
+
+    margin-bottom:4px;
+}
+
+.notice p{
+    color:#526174;
+
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* =========================
+   STEPS
+========================= */
+
+.steps{
+    display:flex;
+    flex-direction:column;
+
+    gap:12px;
+    margin-bottom:26px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+
+    gap:13px;
+    padding:14px;
+
+    border-radius:17px;
+
+    background:#fff;
+
+    border:1px solid var(--border);
+
+    box-shadow:
+        0 5px 15px rgba(15,23,42,.05);
+
+    transition:.25s ease;
+}
+
+.step:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(15,23,42,.10);
+
+    border-color:var(--green);
+}
+
+/* =========================
+   STEP NUMBERS
+========================= */
+
+.number{
+    width:45px;
+    height:45px;
+    min-width:45px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    color:white;
+
+    font-size:18px;
+    font-weight:800;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.15);
+}
+
+.green{
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green-dark)
+        );
+}
+
+.red{
+    background:
+        linear-gradient(
+            135deg,
+            var(--red),
+            var(--red-dark)
+        );
+}
+
+.orange{
+    background:
+        linear-gradient(
+            135deg,
+            var(--orange),
+            #C85F00
+        );
+}
+
+/* =========================
+   STEP ICON
+========================= */
+
+.step-icon{
+    width:45px;
+    min-width:45px;
+
+    text-align:center;
+
+    font-size:27px;
+}
+
+/* =========================
+   STEP TEXT
+========================= */
+
+.step-text{
+    flex:1;
+
+    color:var(--text);
+
+    font-size:14px;
+    font-weight:650;
+
+    line-height:1.45;
+}
+
+/* =========================
+   ARROWS
+========================= */
+
+.arrow{
+    width:34px;
+    height:34px;
+    min-width:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    font-size:25px;
+}
+
+.arrow-green{
+    color:var(--green);
+    background:#EFFAE9;
+}
+
+.arrow-red{
+    color:var(--red);
+    background:#FFF0EE;
+}
+
+.arrow-orange{
+    color:#C85F00;
+    background:#FFF5E5;
+}
+
+/* =========================
+   START BUTTON
+========================= */
+
+.start{
+    position:relative;
+
+    width:100%;
+
+    padding:18px;
+
+    border:none;
+    border-radius:16px;
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--green) 0%,
+            var(--green-dark) 55%,
+            var(--black) 100%
+        );
+
+    font-size:18px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.25);
+
+    transition:.25s ease;
+
+    overflow:hidden;
+}
+
+.start::before{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-100%;
+
+    width:100%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.25),
+            transparent
+        );
+
+    transition:.5s;
+}
+
+.start:hover::before{
+    left:100%;
+}
+
+.start:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 16px 30px rgba(0,0,0,.32);
+}
+
+.start:active{
+    transform:translateY(0);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    padding:17px;
+
+    text-align:center;
+
+    background:#f8fafc;
+
+    border-top:1px solid var(--border);
+
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+.footer strong{
+    color:var(--green);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    body{
+        padding:6px;
+        align-items:flex-start;
+        padding-top:8px;
+    }
+
+    .container{
+        width:100%;
+        max-width:100%;
+        border-radius:20px;
+    }
+
+    .hero img{
+        width:100%;
+        height:auto;
+        display:block;
+    }
+
+    .header{
+        padding:20px 12px;
+    }
+
+    .header h1{
+        font-size:23px;
+    }
+
+    .subtitle{
+        font-size:12px;
+        gap:8px;
+    }
+
+    .line{
+        width:38px;
+    }
+
+    .content{
+        padding:19px 14px;
+    }
+
+    .welcome{
+        margin-bottom:20px;
+    }
+
+    .welcome h2{
+        font-size:25px;
+    }
+
+    .welcome p{
+        font-size:13px;
+        line-height:1.55;
+    }
+
+    .notice{
+        padding:12px;
+        gap:10px;
+        margin-bottom:18px;
+    }
+
+    .notice-icon{
+        width:40px;
+        height:40px;
+        min-width:40px;
+        font-size:19px;
+    }
+
+    .notice h3{
+        font-size:15px;
+    }
+
+    .notice p{
+        font-size:11px;
+    }
+
+    .steps{
+        gap:9px;
+        margin-bottom:20px;
+    }
+
+    .step{
+        padding:10px 8px;
+        gap:7px;
+        border-radius:14px;
+    }
+
+    .number{
+        width:37px;
+        height:37px;
+        min-width:37px;
+        font-size:15px;
+        border-radius:11px;
+    }
+
+    .step-icon{
+        width:32px;
+        min-width:32px;
+        font-size:21px;
+    }
+
+    .step-text{
+        font-size:11px;
+        line-height:1.35;
+    }
+
+    .arrow{
+        width:28px;
+        height:28px;
+        min-width:28px;
+        font-size:20px;
+    }
+
+    .start{
+        padding:15px;
+        font-size:16px;
+        border-radius:14px;
+    }
+
+    .footer{
+        padding:13px;
+        font-size:11px;
+    }
+}
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media(max-width:380px){
+
+    .hero img{
+        width:100%;
+        height:auto;
+    }
+
+    .content{
+        padding:17px 11px;
+    }
+
+    .header h1{
+        font-size:21px;
+    }
+
+    .welcome h2{
+        font-size:23px;
+    }
+
+    .welcome p{
+        font-size:12px;
+    }
+
+    .step{
+        padding:9px 6px;
+    }
+
+    .number{
+        width:34px;
+        height:34px;
+        min-width:34px;
+        font-size:14px;
+    }
+
+    .step-icon{
+        width:28px;
+        min-width:28px;
+        font-size:19px;
+    }
+
+    .step-text{
+        font-size:10px;
+    }
+
+    .arrow{
+        width:25px;
+        height:25px;
+        min-width:25px;
+        font-size:18px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+        <img
+            src="zambiafinancialsupport.jpg"
+            alt="Zambia Financial Support"
+        >
+    </div>
+
+
+    <!-- HEADER -->
+    <div class="header">
+
+        <h1>
+            ZAMBIA FINANCIAL SUPPORT
+        </h1>
+
+        <div class="subtitle">
+
+            <span class="line"></span>
+
+            <span>
+                Application Portal
+            </span>
+
+            <span class="line"></span>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+    <div class="content">
+
+
+        <!-- WELCOME -->
+        <div class="welcome">
+
+            <h2>
+                Welcome
+            </h2>
+
+            <p>
+                Complete the application by providing your
+                information and reviewing your application details.
+            </p>
+
+        </div>
+
+
+        <!-- NOTICE -->
+        <div class="notice">
+
+            <div class="notice-icon">
+                📋
+            </div>
+
+            <div>
+
+                <h3>
+                    Before You Start
+                </h3>
+
+                <p>
+                    Please make sure your personal information
+                    is correct before beginning the application.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEPS -->
+        <div class="steps">
+
+
+            <!-- STEP 1 -->
+            <div class="step">
+
+                <div class="number green">
+                    1
+                </div>
+
+                <div class="step-icon">
+                    👤
+                </div>
+
+                <div class="step-text">
+                    Enter your personal information
+                </div>
+
+                <div class="arrow arrow-green">
+                    ›
+                </div>
+
+            </div>
+
+
+            <!-- STEP 2 -->
+            <div class="step">
+
+                <div class="number red">
+                    2
+                </div>
+
+                <div class="step-icon">
+                    📝
+                </div>
+
+                <div class="step-text">
+                    Review your application and select
+                    the purpose of the funds
+                </div>
+
+                <div class="arrow arrow-red">
+                    ›
+                </div>
+
+            </div>
+
+
+            <!-- STEP 3 -->
+            <div class="step">
+
+                <div class="number orange">
+                    3
+                </div>
+
+                <div class="step-icon">
+                    💰
+                </div>
+
+                <div class="step-text">
+                    Select the amount requested
+                </div>
+
+                <div class="arrow arrow-orange">
+                    ›
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- START BUTTON -->
+        <button
+            class="start"
+            type="button"
+            onclick="startApplication()"
+        >
+            🚀 &nbsp; Start Application &nbsp; →
+        </button>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <div class="footer">
+
+        © 2026
+        <strong>
+            Zambia Financial Support
+        </strong>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function startApplication(){
+
+    window.location.href = "page1.html";
+
+}
+
+</script>
+
+</body>
+                  </html>
