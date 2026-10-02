@@ -310,7 +310,7 @@ readonly
 type="tel"
 id="phone"
 placeholder="097XXXXXXX"
-maxlength="10"
+maxlength="12"
 >
 
 <label>📲 Mobile Money Provider</label>
@@ -407,11 +407,6 @@ Demo interface
 <script>
 "use strict";
 
-/*
-  SAMPLE APPLICATION ONLY.
-  No external payment service is contacted.
-*/
-
 const applicant =
 localStorage.getItem("fullName") ||
 localStorage.getItem("fullname") ||
@@ -480,23 +475,283 @@ msg.className = type;
 
 }
 
-payBtn.addEventListener("click",() => {
+
+/*
+ * Validate the Zambian phone number.
+ */
+function validZambianPhone(phone){
+
+const value =
+String(phone || "").replace(/\s+/g,"");
+
+return /^0\d{9}$/.test(value) ||
+       /^260\d{9}$/.test(value);
+
+}
+
+
+/*
+ * Start Ontech Sandbox collection.
+ *
+ * The browser calls OUR backend.
+ * The Ontech API key never reaches the browser.
+ */
+payBtn.addEventListener("click", async () => {
+
+const phone =
+document.getElementById("phone").value.trim();
+
+if(!validZambianPhone(phone)){
 
 setMessage(
-"Sample application continued. No payment was processed.",
+"Please enter a valid Zambian mobile number.",
+"error"
+);
+
+return;
+
+}
+
+if(!processingFee || processingFee <= 0){
+
+setMessage(
+"No application fee is available for this application.",
+"error"
+);
+
+return;
+
+}
+
+payBtn.disabled = true;
+payBtn.textContent = "Processing...";
+
+setMessage(
+"Connecting to Ontech Sandbox...",
 "success"
 );
 
-payBtn.disabled = true;
-payBtn.textContent = "Continue ✓";
+try{
+
+const reference =
+"ZSF-" +
+Date.now() +
+"-" +
+Math.random()
+.toString(36)
+.substring(2,8)
+.toUpperCase();
+
+const response =
+await fetch("/api/pay",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+amount:processingFee,
+
+phone:phone,
+
+customer_name:applicant,
+
+reference:reference
+
+})
+
+});
+
+const data =
+await response.json();
+
+if(!response.ok || !data.success){
+
+throw new Error(
+data.message ||
+"Payment request failed."
+);
+
+}
+
+
+/*
+ * Save transaction information locally
+ * so the next page can check it.
+ */
+localStorage.setItem(
+"ontechTransactionId",
+data.transaction_id || ""
+);
+
+localStorage.setItem(
+"ontechReference",
+data.reference || reference
+);
+
+localStorage.setItem(
+"ontechProvider",
+data.provider || selectedProvider
+);
+
+localStorage.setItem(
+"ontechStatus",
+data.status || "pending"
+);
+
+setMessage(
+data.message ||
+"Payment request submitted successfully.",
+"success"
+);
+
+payBtn.textContent =
+"Payment Submitted ✓";
+
+
+/*
+ * Sandbox responses may already be successful.
+ * We still check the transaction status before
+ * moving to the next page.
+ */
+if(data.transaction_id){
+
+await waitForPayment(
+data.transaction_id
+);
+
+}else{
 
 setTimeout(() => {
 
-window.location.href = "delivery.html";
+window.location.href =
+"delivery.html";
+
+},1200);
+
+}
+
+}catch(error){
+
+console.error(error);
+
+setMessage(
+error.message ||
+"Unable to start the payment.",
+"error"
+);
+
+payBtn.disabled = false;
+payBtn.textContent = "Continue";
+
+}
+
+});
+
+
+/*
+ * Check Ontech transaction status.
+ */
+async function waitForPayment(transactionId){
+
+const maxAttempts = 10;
+
+for(let attempt = 0;
+    attempt < maxAttempts;
+    attempt++){
+
+try{
+
+const response =
+await fetch(
+"/api/pay/status/" +
+encodeURIComponent(transactionId)
+);
+
+const data =
+await response.json();
+
+const status =
+String(
+data.status ||
+""
+).toLowerCase();
+
+localStorage.setItem(
+"ontechStatus",
+status
+);
+
+if(
+status === "success" ||
+status === "completed"
+){
+
+setMessage(
+"Payment confirmed.",
+"success"
+);
+
+setTimeout(() => {
+
+window.location.href =
+"delivery.html";
 
 },1000);
 
-});
+return;
+
+}
+
+if(status === "failed"){
+
+throw new Error(
+data.message ||
+"Payment failed."
+);
+
+}
+
+setMessage(
+"Payment status: " +
+(status || "processing") +
+"...",
+"success"
+);
+
+}catch(error){
+
+setMessage(
+error.message ||
+"Unable to confirm payment.",
+"error"
+);
+
+payBtn.disabled = false;
+payBtn.textContent = "Continue";
+
+return;
+
+}
+
+await new Promise(
+resolve => setTimeout(resolve,1500)
+);
+
+}
+
+setMessage(
+"Payment is still being processed. Please check again shortly.",
+"error"
+);
+
+payBtn.disabled = false;
+payBtn.textContent = "Check Again";
+
+}
 
 
 /* DECORATIVE FLOWERS */
@@ -554,4 +809,4 @@ createRainFlower,
 </script>
 
 </body>
-  </html>
+</html>
