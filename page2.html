@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Zambia Financial Support - Step 2</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+/* =========================
+   ZAMBIA COLORS
+========================= */
+
+:root{
+    --green:#198A00;
+    --green-dark:#106000;
+    --red:#DE2010;
+    --red-dark:#B7190D;
+    --black:#000000;
+    --orange:#EF7D00;
+    --orange-light:#FFB000;
+    --cream:#FFF8E7;
+    --border:#D1D5DB;
+    --text:#1F2937;
+    --muted:#6B7280;
+}
+
+/* =========================
+   BODY
+========================= */
+
+body{
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--orange),
+            var(--red)
+        );
+
+    padding:8px;
+    min-height:100vh;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+    width:100%;
+    max-width:430px;
+    margin:auto;
+
+    background:#fff;
+
+    border-radius:18px;
+    overflow:hidden;
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,.25);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green-dark),
+            var(--black)
+        );
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:24px 18px;
+}
+
+.header h1{
+    font-size:24px;
+    margin-bottom:5px;
+    font-weight:800;
+}
+
+.header p{
+    font-size:14px;
+    color:#F3F4F6;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress{
+    height:6px;
+
+    background:rgba(255,255,255,.25);
+
+    margin-top:14px;
+
+    border-radius:8px;
+
+    overflow:hidden;
+}
+
+.progress span{
+    display:block;
+
+    width:66%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--orange),
+            var(--red)
+        );
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:18px;
+}
+
+/* =========================
+   TITLES
+========================= */
+
+.title{
+    font-size:22px;
+
+    font-weight:800;
+
+    color:var(--text);
+
+    margin-bottom:6px;
+}
+
+.subtitle{
+    font-size:14px;
+
+    color:var(--muted);
+
+    line-height:1.45;
+
+    margin-bottom:18px;
+}
+
+/* =========================
+   OPTIONS
+========================= */
+
+.option{
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:14px;
+
+    border:2px solid #E5E7EB;
+
+    border-radius:12px;
+
+    margin-bottom:10px;
+
+    cursor:pointer;
+
+    transition:.2s ease;
+
+    background:#fff;
+}
+
+.option:hover{
+    border-color:var(--green);
+
+    background:#F3FAF1;
+}
+
+.option input{
+    display:none;
+}
+
+.option.active{
+    border-color:var(--green);
+
+    background:#EDF8EA;
+
+    box-shadow:
+        0 3px 8px rgba(25,138,0,.10);
+}
+
+/* =========================
+   ICON
+========================= */
+
+.icon{
+    font-size:26px;
+
+    width:34px;
+
+    text-align:center;
+
+    flex-shrink:0;
+}
+
+/* =========================
+   TEXT
+========================= */
+
+.text{
+    flex:1;
+}
+
+.text h3{
+    font-size:15px;
+
+    margin-bottom:3px;
+
+    color:#111827;
+}
+
+.text p{
+    font-size:12px;
+
+    color:#6B7280;
+
+    line-height:1.35;
+}
+
+/* =========================
+   CHECKMARK
+========================= */
+
+.checkmark{
+    width:24px;
+
+    height:24px;
+
+    border:2px solid #C7C7C7;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    background:white;
+
+    transition:.2s;
+
+    flex-shrink:0;
+}
+
+.option.active .checkmark{
+    background:var(--green);
+
+    border-color:var(--green);
+
+    color:#fff;
+}
+
+.option.active .checkmark::after{
+    content:"✓";
+}
+
+/* =========================
+   SELECTED BOX
+========================= */
+
+.selected-box{
+    margin-top:14px;
+
+    padding:13px;
+
+    border-radius:10px;
+
+    background:#F3F4F6;
+
+    border-left:4px solid var(--orange);
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    color:#374151;
+}
+
+#selectedPurpose{
+    color:var(--green-dark);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+    width:100%;
+
+    padding:15px;
+
+    margin-top:18px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--green),
+            var(--green-dark),
+            var(--black)
+        );
+
+    color:#fff;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 7px 16px rgba(25,138,0,.25);
+
+    transition:.2s ease;
+}
+
+button:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 10px 20px rgba(25,138,0,.30);
+}
+
+button:active{
+    transform:translateY(0);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    text-align:center;
+
+    padding:16px;
+
+    font-size:13px;
+
+    color:#fff;
+
+    font-weight:600;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green),
+            var(--orange),
+            var(--red)
+        );
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:380px){
+
+    .header{
+        padding:21px 14px;
+    }
+
+    .header h1{
+        font-size:21px;
+    }
+
+    .header p{
+        font-size:13px;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    .title{
+        font-size:20px;
+    }
+
+    .subtitle{
+        font-size:13px;
+    }
+
+    .option{
+        padding:12px;
+    }
+
+    .icon{
+        font-size:23px;
+        width:30px;
+    }
+
+    .text h3{
+        font-size:14px;
+    }
+
+    .text p{
+        font-size:11px;
+    }
+
+    button{
+        font-size:16px;
+    }
+
+    .footer{
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            🇿🇲 Zambia Financial Support
+        </h1>
+
+        <p>
+            Sample Application – Step 2
+        </p>
+
+        <div class="progress">
+            <span></span>
+        </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <div class="title">
+            💰 Purpose of Funds
+        </div>
+
+        <p class="subtitle">
+            Select the main purpose for which the funds will be used.
+        </p>
+
+
+        <form id="page2Form">
+
+
+            <!-- BUSINESS -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="purpose"
+                    value="Business"
+                    required
+                >
+
+                <div class="icon">
+                    🏪
+                </div>
+
+                <div class="text">
+
+                    <h3>
+                        Business
+                    </h3>
+
+                    <p>
+                        Starting, expanding, or supporting a business.
+                    </p>
+
+                </div>
+
+                <div class="checkmark"></div>
+
+            </label>
+
+
+            <!-- EDUCATION -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="purpose"
+                    value="Education"
+                >
+
+                <div class="icon">
+                    🎓
+                </div>
+
+                <div class="text">
+
+                    <h3>
+                        Education
+                    </h3>
+
+                    <p>
+                        School fees, training, or education expenses.
+                    </p>
+
+                </div>
+
+                <div class="checkmark"></div>
+
+            </label>
+
+
+            <!-- AGRICULTURE -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="purpose"
+                    value="Agriculture"
+                >
+
+                <div class="icon">
+                    🌱
+                </div>
+
+                <div class="text">
+
+                    <h3>
+                        Agriculture
+                    </h3>
+
+                    <p>
+                        Farming, livestock, or agricultural activities.
+                    </p>
+
+                </div>
+
+                <div class="checkmark"></div>
+
+            </label>
+
+
+            <!-- MEDICAL -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="purpose"
+                    value="Medical Expenses"
+                >
+
+                <div class="icon">
+                    🏥
+                </div>
+
+                <div class="text">
+
+                    <h3>
+                        Medical Expenses
+                    </h3>
+
+                    <p>
+                        Healthcare, treatment, or medication expenses.
+                    </p>
+
+                </div>
+
+                <div class="checkmark"></div>
+
+            </label>
+
+
+            <!-- HOUSING -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="purpose"
+                    value="Housing"
+                >
+
+                <div class="icon">
+                    🏠
+                </div>
+
+                <div class="text">
+
+                    <h3>
+                        Housing
+                    </h3>
+
+                    <p>
+                        Rent, accommodation, or housing improvements.
+                    </p>
+
+                </div>
+
+                <div class="checkmark"></div>
+
+            </label>
+
+
+            <!-- EMERGENCY -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="purpose"
+                    value="Emergency Expenses"
+                >
+
+                <div class="icon">
+                    🚨
+                </div>
+
+                <div class="text">
+
+                    <h3>
+                        Emergency Expenses
+                    </h3>
+
+                    <p>
+                        Unexpected or urgent financial needs.
+                    </p>
+
+                </div>
+
+                <div class="checkmark"></div>
+
+            </label>
+
+
+            <!-- HOUSEHOLD -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="purpose"
+                    value="Household Needs"
+                >
+
+                <div class="icon">
+                    🏡
+                </div>
+
+                <div class="text">
+
+                    <h3>
+                        Household Needs
+                    </h3>
+
+                    <p>
+                        General household and family expenses.
+                    </p>
+
+                </div>
+
+                <div class="checkmark"></div>
+
+            </label>
+
+
+            <!-- DEBT -->
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="purpose"
+                    value="Debt Repayment"
+                >
+
+                <div class="icon">
+                    💳
+                </div>
+
+                <div class="text">
+
+                    <h3>
+                        Debt Repayment
+                    </h3>
+
+                    <p>
+                        Repayment of existing financial obligations.
+                    </p>
+
+                </div>
+
+                <div class="checkmark"></div>
+
+            </label>
+
+
+            <!-- SELECTED PURPOSE -->
+
+            <div class="selected-box">
+
+                Selected Purpose:
+                <span id="selectedPurpose">
+                    None
+                </span>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button type="submit">
+                Continue to Step 3 →
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        🇿🇲 @ 2026 Zambia Financial Support
+        – Sample Application
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   PURPOSE SELECTION
+========================= */
+
+const options =
+    document.querySelectorAll(
+        'input[name="purpose"]'
+    );
+
+const selectedText =
+    document.getElementById(
+        "selectedPurpose"
+    );
+
+
+options.forEach(option => {
+
+    option.addEventListener(
+        "change",
+        function(){
+
+            document
+            .querySelectorAll(".option")
+            .forEach(card =>
+                card.classList.remove("active")
+            );
+
+            this
+            .closest(".option")
+            .classList.add("active");
+
+            selectedText.textContent =
+                this.value;
+
+        }
+    );
+
+});
+
+
+/* =========================
+   FORM SUBMIT
+========================= */
+
+document
+.getElementById("page2Form")
+.addEventListener(
+    "submit",
+    function(e){
+
+        e.preventDefault();
+
+        const selected =
+            document.querySelector(
+                'input[name="purpose"]:checked'
+            );
+
+        if(!selected){
+
+            alert(
+                "Please select the purpose of the funds."
+            );
+
+            return;
+        }
+
+        localStorage.setItem(
+            "purpose",
+            selected.value
+        );
+
+        window.location.href =
+            "page3.html";
+
+    }
+);
+
+</script>
+
+</body>
+</html>
