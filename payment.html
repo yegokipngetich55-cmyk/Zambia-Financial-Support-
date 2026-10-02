@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#198A00">
+
+<title>Zambia Financial Support — Sample</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:Arial,sans-serif;
+min-height:100vh;
+padding:12px;
+background:
+radial-gradient(circle at 8% 15%,rgba(25,138,0,.55),transparent 28%),
+radial-gradient(circle at 92% 20%,rgba(222,32,16,.45),transparent 25%),
+radial-gradient(circle at 15% 90%,rgba(239,125,0,.50),transparent 28%),
+radial-gradient(circle at 90% 90%,rgba(255,176,0,.40),transparent 25%),
+linear-gradient(
+135deg,
+#198A00 0%,
+#198A00 28%,
+#000000 45%,
+#000000 58%,
+#DE2010 76%,
+#EF7D00 90%,
+#FFB000 100%
+);
+color:#1F2937;
+}
+
+.container{width:100%;max-width:420px;margin:auto;}
+
+.card{
+padding:20px 16px;
+border-radius:20px;
+background:rgba(255,255,255,.95);
+border:1px solid rgba(0,0,0,.08);
+backdrop-filter:blur(14px);
+box-shadow:0 18px 40px rgba(0,0,0,.25);
+}
+
+h1{
+text-align:center;
+font-size:24px;
+margin-bottom:8px;
+color:#106000;
+}
+
+p{
+text-align:center;
+font-size:14px;
+line-height:1.5;
+color:#1F2937;
+}
+
+.amount{
+margin:18px 0;
+padding:14px;
+border-radius:12px;
+text-align:center;
+font-size:20px;
+font-weight:bold;
+background:#198A00;
+border:1px solid #106000;
+color:#fff;
+}
+
+.money{
+color:#FFB000;
+}
+
+label{
+display:block;
+margin:14px 0 6px;
+font-weight:bold;
+font-size:14px;
+color:#1F2937;
+}
+
+input{
+width:100%;
+padding:13px;
+border-radius:10px;
+border:1px solid #D1D5DB;
+background:#fff;
+color:#1F2937;
+font-size:16px;
+outline:none;
+}
+
+input:focus{
+border-color:#198A00;
+box-shadow:0 0 0 3px rgba(25,138,0,.18);
+}
+
+.provider-buttons{
+display:flex;
+gap:8px;
+margin-top:10px;
+}
+
+.provider{
+flex:1;
+padding:12px 7px;
+border-radius:10px;
+border:2px solid #D1D5DB;
+background:#fff;
+color:#1F2937;
+font-weight:bold;
+cursor:pointer;
+transition:.2s;
+font-size:13px;
+}
+
+.provider.active{
+border-color:#198A00;
+background:#198A00;
+color:#fff;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:18px;
+border:none;
+border-radius:11px;
+background:linear-gradient(135deg,#198A00,#106000);
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(0,0,0,.25);
+transition:.25s;
+}
+
+button:hover{
+transform:translateY(-2px);
+}
+
+button:disabled{
+opacity:.6;
+cursor:not-allowed;
+box-shadow:none;
+transform:none;
+}
+
+#stkMessage{
+min-height:35px;
+margin-top:12px;
+text-align:center;
+font-size:13px;
+font-weight:600;
+}
+
+.success{
+color:#198A00;
+}
+
+.error{
+color:#DE2010;
+}
+
+.small{
+margin-top:10px;
+font-size:12px;
+color:#666;
+}
+
+.live-comments{
+position:relative;
+margin-top:25px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.9);
+border:1px solid rgba(0,0,0,.08);
+overflow:hidden;
+}
+
+.live-comments h3{
+text-align:center;
+font-size:17px;
+margin-bottom:15px;
+position:relative;
+z-index:2;
+color:#106000;
+}
+
+.live-comment{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+margin-bottom:10px;
+border-radius:12px;
+background:rgba(25,138,0,.10);
+border:1px solid rgba(25,138,0,.18);
+position:relative;
+z-index:2;
+}
+
+.live-avatar{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#198A00;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+flex-shrink:0;
+}
+
+.live-content strong{
+display:block;
+font-size:14px;
+color:#1F2937;
+}
+
+.live-content p{
+text-align:left;
+font-size:13px;
+margin:2px 0;
+color:#1F2937;
+}
+
+.live-content small{
+font-size:11px;
+color:#666;
+}
+
+.flower-rain{
+position:absolute;
+top:42px;
+left:0;
+width:100%;
+height:190px;
+pointer-events:none;
+z-index:1;
+overflow:hidden;
+}
+
+.rain-flower{
+position:absolute;
+top:-35px;
+animation:flowerFall linear forwards;
+}
+
+@keyframes flowerFall{
+0%{
+transform:translateY(-40px) rotate(0deg);
+opacity:1;
+}
+100%{
+transform:translateY(230px) rotate(360deg);
+opacity:0;
+}
+}
+
+.footer{
+text-align:center;
+padding:14px;
+font-size:12px;
+color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>🇿🇲 Zambia Financial Support</h1>
+
+<p>
+👋 Welcome, <strong id="name">Applicant</strong>
+</p>
+
+<p>
+Sample application review
+</p>
+
+<div class="amount" id="selectedAmountBox">
+💵 Selected Amount:
+<span class="money">ZMW 0</span>
+</div>
+
+<div class="amount" id="feeAmount">
+🧾 Application Fee:
+<span class="money">ZMW 0</span>
+</div>
+
+<label>👤 Full Name</label>
+
+<input
+type="text"
+id="fullName"
+readonly
+>
+
+<label>📱 Phone Number</label>
+
+<input
+type="tel"
+id="phone"
+placeholder="097XXXXXXX"
+maxlength="10"
+>
+
+<label>📲 Mobile Money Provider</label>
+
+<div class="provider-buttons">
+
+<button
+type="button"
+class="provider active"
+data-provider="mtn">
+MTN MoMo
+</button>
+
+<button
+type="button"
+class="provider"
+data-provider="airtel">
+Airtel Money
+</button>
+
+<button
+type="button"
+class="provider"
+data-provider="zamtel">
+Zamtel Kwacha
+</button>
+
+</div>
+
+<button id="payBtn">
+Continue
+</button>
+
+<div id="stkMessage"></div>
+
+<div class="live-comments">
+
+<h3>
+🎉 APPLICATION ACTIVITY
+</h3>
+
+<div class="flower-rain" id="flowerRain"></div>
+
+<div class="live-comment">
+
+<div class="live-avatar">🇿🇲</div>
+
+<div class="live-content">
+
+<strong>Sample Applicant</strong>
+
+<p>
+Application submitted for review
+</p>
+
+<small>
+Sample activity
+</small>
+
+</div>
+
+</div>
+
+<div class="live-comment">
+
+<div class="live-avatar">✓</div>
+
+<div class="live-content">
+
+<strong>Application Review</strong>
+
+<p>
+Your application information can be reviewed here
+</p>
+
+<small>
+Demo interface
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+© 2026 Zambia Financial Support — Sample Application
+</div>
+
+</div>
+
+</div>
+
+<script>
+"use strict";
+
+/*
+  SAMPLE APPLICATION ONLY.
+  No external payment service is contacted.
+*/
+
+const applicant =
+localStorage.getItem("fullName") ||
+localStorage.getItem("fullname") ||
+localStorage.getItem("applicantName") ||
+"Applicant";
+
+const savedPhone =
+localStorage.getItem("phoneNumber") ||
+localStorage.getItem("phone") ||
+"";
+
+const processingFee =
+Number(localStorage.getItem("processingFee") || 0);
+
+const selectedAmount =
+Number(localStorage.getItem("selectedAmount") || 0);
+
+document.getElementById("name").textContent =
+applicant;
+
+document.getElementById("fullName").value =
+applicant;
+
+document.getElementById("phone").value =
+savedPhone;
+
+document.getElementById("selectedAmountBox").innerHTML =
+"💵 Selected Amount: <span class='money'>ZMW " +
+selectedAmount.toLocaleString("en-ZM") +
+"</span>";
+
+document.getElementById("feeAmount").innerHTML =
+"🧾 Application Fee: <span class='money'>ZMW " +
+processingFee.toLocaleString("en-ZM") +
+"</span>";
+
+const payBtn =
+document.getElementById("payBtn");
+
+const msg =
+document.getElementById("stkMessage");
+
+let selectedProvider = "mtn";
+
+document.querySelectorAll(".provider").forEach(btn => {
+
+btn.addEventListener("click", () => {
+
+document
+.querySelectorAll(".provider")
+.forEach(b => b.classList.remove("active"));
+
+btn.classList.add("active");
+
+selectedProvider =
+btn.dataset.provider;
+
+});
+
+});
+
+function setMessage(text,type=""){
+
+msg.textContent = text;
+msg.className = type;
+
+}
+
+payBtn.addEventListener("click",() => {
+
+setMessage(
+"Sample application continued. No payment was processed.",
+"success"
+);
+
+payBtn.disabled = true;
+payBtn.textContent = "Continue ✓";
+
+setTimeout(() => {
+
+window.location.href = "delivery.html";
+
+},1000);
+
+});
+
+
+/* DECORATIVE FLOWERS */
+
+const rainContainer =
+document.getElementById("flowerRain");
+
+const flowerIcons = [
+"🌸",
+"🌺",
+"🌹",
+"🌼",
+"💐",
+"🌷"
+];
+
+function createRainFlower(){
+
+const flower =
+document.createElement("span");
+
+flower.className =
+"rain-flower";
+
+flower.textContent =
+flowerIcons[
+Math.floor(
+Math.random()*flowerIcons.length
+)
+];
+
+flower.style.left =
+Math.random()*100+"%";
+
+flower.style.fontSize =
+(16+Math.random()*12)+"px";
+
+flower.style.animationDuration =
+(2+Math.random()*2)+"s";
+
+rainContainer.appendChild(flower);
+
+setTimeout(
+() => flower.remove(),
+4500
+);
+
+}
+
+setInterval(
+createRainFlower,
+180
+);
+
+</script>
+
+</body>
+  </html>
