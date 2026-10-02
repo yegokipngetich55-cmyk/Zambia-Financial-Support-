@@ -9,6 +9,7 @@ const path = require("path");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+
 const ONTECH_BASE_URL =
   process.env.ONTECH_BASE_URL ||
   "https://payments.ontech.co.zm/api/v1";
@@ -27,10 +28,16 @@ if (!ONTECH_WEBHOOK_SECRET) {
 app.use(express.json());
 
 /*
- * Serve your frontend files from the same project.
+ * Serve frontend files from the public folder.
  *
- * Put payment.html, delivery.html, page1.html, page2.html,
- * page3.html, etc. inside the public folder.
+ * Example:
+ * public/
+ *   index.html
+ *   page1.html
+ *   page2.html
+ *   page3.html
+ *   payment.html
+ *   delivery.html
  */
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -38,12 +45,12 @@ app.use(express.static(path.join(__dirname, "public")));
 /*
  * Basic Zambian phone validation.
  *
- * Accepted:
+ * Accepted formats:
  * 09XXXXXXXX
  * 260XXXXXXXXX
  */
 function normalizeZambianPhone(phone) {
-  let value = String(phone || "").replace(/\s+/g, "");
+  const value = String(phone || "").replace(/\s+/g, "");
 
   if (/^0\d{9}$/.test(value)) {
     return value;
@@ -70,8 +77,10 @@ function createIdempotencyKey() {
 /*
  * POST /api/pay
  *
- * The browser sends the selected amount, fee and phone.
- * The secret API key is used ONLY here on the server.
+ * Sends a payment request to the Ontech sandbox.
+ *
+ * The Ontech API key remains on the server and is never
+ * exposed to the browser.
  */
 app.post("/api/pay", async (req, res) => {
   try {
@@ -91,7 +100,10 @@ app.post("/api/pay", async (req, res) => {
 
     const paymentAmount = Number(amount);
 
-    if (!Number.isFinite(paymentAmount) || paymentAmount <= 0) {
+    if (
+      !Number.isFinite(paymentAmount) ||
+      paymentAmount <= 0
+    ) {
       return res.status(400).json({
         success: false,
         message: "Invalid payment amount."
@@ -102,7 +114,9 @@ app.post("/api/pay", async (req, res) => {
 
     const internalReference =
       String(reference || "").trim() ||
-      `ZSF-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
+      `ZSF-${Date.now()}-${crypto
+        .randomBytes(4)
+        .toString("hex")}`;
 
     const idempotencyKey = createIdempotencyKey();
 
@@ -110,16 +124,21 @@ app.post("/api/pay", async (req, res) => {
       `${ONTECH_BASE_URL}/pay/collect`,
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
           "X-API-Key": ONTECH_API_KEY,
           "X-Idempotency-Key": idempotencyKey
         },
+
         body: JSON.stringify({
           amount: Number(paymentAmount.toFixed(2)),
           phone: normalizedPhone,
           reference: internalReference,
-          description: "Zambia Financial Support sample application",
+
+          description:
+            "Zambia Financial Support sample application",
+
           customer_name:
             String(customer_name || "Applicant").trim()
         })
@@ -134,13 +153,16 @@ app.post("/api/pay", async (req, res) => {
       gatewayData = JSON.parse(rawText);
     } catch {
       gatewayData = {
-        detail: rawText || "Invalid response from payment gateway."
+        detail:
+          rawText ||
+          "Invalid response from payment gateway."
       };
     }
 
     if (!gatewayResponse.ok) {
       return res.status(gatewayResponse.status).json({
         success: false,
+
         message:
           gatewayData.detail ||
           gatewayData.message ||
@@ -150,14 +172,25 @@ app.post("/api/pay", async (req, res) => {
 
     return res.json({
       success: true,
-      transaction_id: gatewayData.transaction_id,
-      status: gatewayData.status,
+
+      transaction_id:
+        gatewayData.transaction_id,
+
+      status:
+        gatewayData.status,
+
       message:
         gatewayData.message ||
         "Payment request submitted.",
-      amount: gatewayData.amount,
-      provider: gatewayData.provider,
-      reference: internalReference
+
+      amount:
+        gatewayData.amount,
+
+      provider:
+        gatewayData.provider,
+
+      reference:
+        internalReference
     });
 
   } catch (error) {
@@ -165,6 +198,7 @@ app.post("/api/pay", async (req, res) => {
 
     return res.status(500).json({
       success: false,
+
       message:
         error.message ||
         "Unable to connect to the payment gateway."
@@ -176,100 +210,146 @@ app.post("/api/pay", async (req, res) => {
 /*
  * GET /api/pay/status/:transactionId
  *
- * Checks an existing Ontech transaction.
+ * Checks the status of an existing Ontech transaction.
  */
-app.get("/api/pay/status/:transactionId", async (req, res) => {
-  try {
-    if (!ONTECH_API_KEY) {
+app.get(
+  "/api/pay/status/:transactionId",
+  async (req, res) => {
+    try {
+      if (!ONTECH_API_KEY) {
+        return res.status(500).json({
+          success: false,
+          message:
+            "Payment gateway is not configured."
+        });
+      }
+
+      const transactionId =
+        String(
+          req.params.transactionId || ""
+        ).trim();
+
+      if (!transactionId) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Missing transaction ID."
+        });
+      }
+
+      const gatewayResponse =
+        await fetch(
+          `${ONTECH_BASE_URL}/pay/status/${encodeURIComponent(
+            transactionId
+          )}`,
+          {
+            method: "GET",
+
+            headers: {
+              "X-API-Key": ONTECH_API_KEY
+            }
+          }
+        );
+
+      const rawText =
+        await gatewayResponse.text();
+
+      let gatewayData;
+
+      try {
+        gatewayData =
+          JSON.parse(rawText);
+      } catch {
+        gatewayData = {
+          detail: rawText
+        };
+      }
+
+      if (!gatewayResponse.ok) {
+        return res.status(
+          gatewayResponse.status
+        ).json({
+          success: false,
+
+          message:
+            gatewayData.detail ||
+            gatewayData.message ||
+            "Unable to check payment status."
+        });
+      }
+
+      return res.json(gatewayData);
+
+    } catch (error) {
+      console.error(
+        "Status error:",
+        error
+      );
+
       return res.status(500).json({
         success: false,
-        message: "Payment gateway is not configured."
-      });
-    }
-
-    const transactionId =
-      String(req.params.transactionId || "").trim();
-
-    if (!transactionId) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing transaction ID."
-      });
-    }
-
-    const gatewayResponse = await fetch(
-      `${ONTECH_BASE_URL}/pay/status/${encodeURIComponent(transactionId)}`,
-      {
-        method: "GET",
-        headers: {
-          "X-API-Key": ONTECH_API_KEY
-        }
-      }
-    );
-
-    const rawText = await gatewayResponse.text();
-
-    let gatewayData;
-
-    try {
-      gatewayData = JSON.parse(rawText);
-    } catch {
-      gatewayData = {
-        detail: rawText
-      };
-    }
-
-    if (!gatewayResponse.ok) {
-      return res.status(gatewayResponse.status).json({
-        success: false,
         message:
-          gatewayData.detail ||
-          gatewayData.message ||
           "Unable to check payment status."
       });
     }
-
-    return res.json(gatewayData);
-
-  } catch (error) {
-    console.error("Status error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Unable to check payment status."
-    });
   }
-});
+);
 
 
 /*
- * Webhook signature verification.
+ * Verify Ontech webhook signature.
  *
- * Ontech signs JSON with alphabetically sorted top-level keys.
+ * Ontech signs the JSON payload using HMAC-SHA256.
+ * Top-level payload keys are sorted alphabetically
+ * before generating the signature.
  */
-function verifyOntechSignature(payload, signature) {
-  if (!ONTECH_WEBHOOK_SECRET || !signature) {
+function verifyOntechSignature(
+  payload,
+  signature
+) {
+  if (
+    !ONTECH_WEBHOOK_SECRET ||
+    !signature
+  ) {
     return false;
   }
 
-  const sortedKeys = Object.keys(payload).sort();
+  const sortedKeys =
+    Object.keys(payload).sort();
 
-  const payloadString = JSON.stringify(
-    payload,
-    sortedKeys
-  );
+  const payloadString =
+    JSON.stringify(
+      payload,
+      sortedKeys
+    );
 
-  const expected = crypto
-    .createHmac(
-      "sha256",
-      ONTECH_WEBHOOK_SECRET
-    )
-    .update(payloadString)
-    .digest("hex");
+  const expected =
+    crypto
+      .createHmac(
+        "sha256",
+        ONTECH_WEBHOOK_SECRET
+      )
+      .update(payloadString)
+      .digest("hex");
+
+  const expectedBuffer =
+    Buffer.from(expected);
+
+  const signatureBuffer =
+    Buffer.from(
+      String(signature)
+    );
+
+  if (
+    expectedBuffer.length !==
+    signatureBuffer.length
+  ) {
+    return false;
+  }
 
   return crypto.timingSafeEqual(
-    Buffer.from(expected),
-    Buffer.from(String(signature))
+    expectedBuffer,
+    signatureBuffer
   );
 }
 
@@ -277,75 +357,91 @@ function verifyOntechSignature(payload, signature) {
 /*
  * POST /webhooks/ontech-payment
  *
- * Ontech sends payment events here.
+ * Receives Ontech payment events.
  */
-app.post("/webhooks/ontech-payment", (req, res) => {
-  try {
-    const signature =
-      req.headers["x-webhook-signature"];
+app.post(
+  "/webhooks/ontech-payment",
+  (req, res) => {
+    try {
+      const signature =
+        req.headers[
+          "x-webhook-signature"
+        ];
 
-    const payload = req.body;
+      const payload =
+        req.body;
 
-    if (!verifyOntechSignature(payload, signature)) {
-      console.warn("Invalid Ontech webhook signature.");
+      if (
+        !verifyOntechSignature(
+          payload,
+          signature
+        )
+      ) {
+        console.warn(
+          "Invalid Ontech webhook signature."
+        );
+
+        return res
+          .status(401)
+          .send("Invalid signature");
+      }
+
+      const {
+        event,
+        transaction_id,
+        amount,
+        status,
+        app_reference,
+        customer_phone
+      } = payload;
+
+      console.log(
+        "Ontech webhook received:",
+        {
+          event,
+          transaction_id,
+          amount,
+          status,
+          app_reference,
+          customer_phone
+        }
+      );
+
+      /*
+       * A production application could save the
+       * transaction and status in a database here.
+       *
+       * This sample application does not use a database.
+       * The browser checks transaction status through:
+       *
+       * GET /api/pay/status/:transactionId
+       */
 
       return res
-        .status(401)
-        .send("Invalid signature");
+        .status(200)
+        .send("OK");
+
+    } catch (error) {
+      console.error(
+        "Webhook error:",
+        error
+      );
+
+      return res
+        .status(500)
+        .send(
+          "Webhook processing error"
+        );
     }
-
-    const {
-      event,
-      transaction_id,
-      amount,
-      status,
-      app_reference,
-      customer_phone
-    } = payload;
-
-    console.log("Ontech webhook received:", {
-      event,
-      transaction_id,
-      amount,
-      status,
-      app_reference,
-      customer_phone
-    });
-
-    /*
-     * In a production application, save the transaction
-     * and its status in your database here.
-     *
-     * For this sample integration, the browser checks the
-     * transaction status through /api/pay/status/:id.
-     */
-
-    return res.status(200).send("OK");
-
-  } catch (error) {
-    console.error("Webhook error:", error);
-
-    return res
-      .status(500)
-      .send("Webhook processing error");
   }
-});
+);
 
 
 /*
- * Health check
- */
-app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    service: "Zambia Financial Support Ontech Sandbox",
-    mode: "sandbox"
-  });
-});
-
-
-app.listen(PORT, () => {
-  console.log(
-    `Server running on http://localhost:${PORT}`
-  );
-}); aww
+ * Health check.
+ *
+ * Open:
+ * /api/health
+ *
+ * Example:
+ * https://your
